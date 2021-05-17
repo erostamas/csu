@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -24,6 +25,7 @@ import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class ScannedBarcodeActivity extends AppCompatActivity {
 
@@ -35,7 +37,6 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
     Button btnAction;
     String intentData = "";
     boolean isEmail = false;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,20 +130,13 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
 
                         @Override
                         public void run() {
-
-                            if (barcodes.valueAt(0).email != null) {
-                                txtBarcodeValue.removeCallbacks(null);
-                                intentData = barcodes.valueAt(0).email.address;
-                                txtBarcodeValue.setText(intentData);
-                                isEmail = true;
-                                btnAction.setText("DO SOMETHING");
-                            } else {
-                                isEmail = false;
-                                btnAction.setText("DO SOMETHING");
-                                intentData = barcodes.valueAt(0).displayValue;
-                                txtBarcodeValue.setText(intentData);
-
-                            }
+                            intentData = barcodes.valueAt(0).displayValue;
+                            txtBarcodeValue.setText(intentData);
+                            CollectItemsActivity._items.add(new Item(intentData, "1"));
+                            CollectItemsActivity._itemsRecyclerViewAdapter.notifyDataSetChanged();
+                            GetItemDetailsTask getDetailsTask = new GetItemDetailsTask(intentData, btnAction);
+                            getDetailsTask.execute("start");
+                            finish();
                         }
                     });
 
