@@ -37,6 +37,7 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
     Button btnAction;
     String intentData = "";
     boolean isEmail = false;
+    public static boolean _detected = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,24 +123,27 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
 
             @Override
             public void receiveDetections(Detector.Detections<Barcode> detections) {
-                final SparseArray<Barcode> barcodes = detections.getDetectedItems();
-                if (barcodes.size() != 0) {
+                if (!_detected) {
+                    final SparseArray<Barcode> barcodes = detections.getDetectedItems();
+                    if (barcodes.size() != 0) {
+                        _detected = true;
+                        try {
+                            runOnUiThread(new Runnable() {
 
-
-                    txtBarcodeValue.post(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            intentData = barcodes.valueAt(0).displayValue;
-                            txtBarcodeValue.setText(intentData);
-                            CollectItemsActivity._items.add(new Item(intentData, "1"));
-                            CollectItemsActivity._itemsRecyclerViewAdapter.notifyDataSetChanged();
-                            GetItemDetailsTask getDetailsTask = new GetItemDetailsTask(intentData, btnAction);
-                            getDetailsTask.execute("start");
-                            finish();
+                                @Override
+                                public void run() {
+                                    intentData = barcodes.valueAt(0).displayValue;
+                                    txtBarcodeValue.setText(intentData);
+                                    GetItemDetailsTask getDetailsTask = new GetItemDetailsTask(intentData);
+                                    getDetailsTask.execute("start");
+                                }
+                            });
+                            Thread.sleep(300);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
                         }
-                    });
-
+                        finish();
+                    }
                 }
             }
         });

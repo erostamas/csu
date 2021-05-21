@@ -32,8 +32,8 @@ public class CollectItemsActivity extends AppCompatActivity implements ItemsRecy
         recyclerView.setAdapter(_itemsRecyclerViewAdapter);
         registerForContextMenu(recyclerView);
 
-        _items.add(new Item("x", "y"));
-        _items.add(new Item("y", "z"));
+        //_items.add(new Item("x", "y"));
+        //_items.add(new Item("y", "z"));
         _itemsRecyclerViewAdapter.notifyDataSetChanged();
 
 
@@ -60,6 +60,7 @@ public class CollectItemsActivity extends AppCompatActivity implements ItemsRecy
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.add_item:
+                ScannedBarcodeActivity._detected = false;
                 startActivity(new Intent(this, ScannedBarcodeActivity.class));
                 break;
         }

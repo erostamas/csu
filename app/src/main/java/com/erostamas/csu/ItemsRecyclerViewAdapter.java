@@ -41,10 +41,10 @@ public class ItemsRecyclerViewAdapter extends RecyclerView.Adapter<ItemViewHolde
         holder.position = position;
         TextView name = (TextView) holder.rootView.findViewById(R.id.item_name);
         name.setText(_itemContainer.get(position).getName());
+        TextView code = (TextView) holder.rootView.findViewById(R.id.item_code);
+        code.setText(_itemContainer.get(position).getCode());
         TextView quantity = (TextView) holder.rootView.findViewById(R.id.item_quantity);
         quantity.setText(_itemContainer.get(position).getQuantity());
-
-
     }
 
     // total number of cells

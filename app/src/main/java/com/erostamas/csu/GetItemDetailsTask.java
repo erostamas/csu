@@ -7,9 +7,8 @@ public class GetItemDetailsTask extends AsyncTask<String,String,String> {
     private String _code;
     private Button _button;
 
-    GetItemDetailsTask(String code, Button button) {
+    GetItemDetailsTask(String code) {
         this._code = code;
-        this._button = button;
     }
     @Override
     protected String doInBackground(String... params) {
@@ -19,7 +18,8 @@ public class GetItemDetailsTask extends AsyncTask<String,String,String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        _button.setText(s);
+        CollectItemsActivity._items.add(new Item(s, _code,"1"));
+        CollectItemsActivity._itemsRecyclerViewAdapter.notifyDataSetChanged();
     }
 
     @Override
